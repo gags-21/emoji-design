@@ -9,7 +9,13 @@ import SwiftUI
 
 class EmojiDesignDocument: ObservableObject
 {
-    @Published private(set) var emojiDesign: EmojiDesignModel
+    @Published private(set) var emojiDesign: EmojiDesignModel {
+        didSet {
+            if emojiDesign.background != oldValue.background {
+                fetchbackgroundIfNecessary()
+            }
+        }
+    }
     
     init (){
         emojiDesign = EmojiDesignModel()
@@ -20,11 +26,33 @@ class EmojiDesignDocument: ObservableObject
     var emojis: [EmojiDesignModel.Emoji] {emojiDesign.emojis}
     var background: EmojiDesignModel.Backgoround {emojiDesign.background}
     
+    @Published var backgroundImage: UIImage?
+    
+    private func fetchbackgroundIfNecessary () {
+        backgroundImage = nil
+        switch emojiDesign.background {
+        case .url(let url) :
+            // fetch URL
+            DispatchQueue.global(qos: .userInitiated).async {
+                let imageData = try? Data(contentsOf: url)
+                DispatchQueue.main.async { [weak self] in
+                    if imageData != nil {
+                        self?.backgroundImage = UIImage(data: imageData!)
+                    }
+                }
+            }
+        case .ImageData(let data):
+            backgroundImage = UIImage(data: data)
+        case .blank:
+            break
+        }
+    }
     
     // MARK:    - Intent(s)
     
     func setBackground (_ background: EmojiDesignModel.Backgoround) {
         emojiDesign.background = background
+        print("Background updated  = \(background)")
     }
     
     func addEmoji(_ emoji: String, at location: (x: Int, y: Int), size: CGFloat) {
