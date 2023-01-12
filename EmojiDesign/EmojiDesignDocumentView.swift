@@ -28,10 +28,14 @@ struct EmojiDesignDocumentView: View {
                     OptionalImage(uiImage: document.backgroundImage)
                         .position(convertFromEmojiCoordinates((0,0), in: gProxy))
                 )
-                ForEach (document.emojis) { emoji in
-                    Text(emoji.text)
-                        .font(.system(size: fontSize(for: emoji)))
-                        .position(position(for: emoji, in: gProxy))
+                if document.backgroundImageFetchStatus == .fetching {
+                    ProgressView().scaleEffect(2)
+                } else {
+                    ForEach (document.emojis) { emoji in
+                        Text(emoji.text)
+                            .font(.system(size: fontSize(for: emoji)))
+                            .position(position(for: emoji, in: gProxy))
+                    }
                 }
             }
             .onDrop(of: [.plainText, .url, .image], isTargeted: nil) { providers, location in

@@ -27,17 +27,27 @@ class EmojiDesignDocument: ObservableObject
     var background: EmojiDesignModel.Backgoround {emojiDesign.background}
     
     @Published var backgroundImage: UIImage?
+    @Published var backgroundImageFetchStatus = BackgroundImageFetchStatus.idle
+    
+    enum BackgroundImageFetchStatus {
+        case idle
+        case fetching
+    }
     
     private func fetchbackgroundIfNecessary () {
         backgroundImage = nil
         switch emojiDesign.background {
         case .url(let url) :
             // fetch URL
+            backgroundImageFetchStatus = .fetching
             DispatchQueue.global(qos: .userInitiated).async {
                 let imageData = try? Data(contentsOf: url)
                 DispatchQueue.main.async { [weak self] in
-                    if imageData != nil {
-                        self?.backgroundImage = UIImage(data: imageData!)
+                    if self?.emojiDesign.background == EmojiDesignModel.Backgoround.url(url) {
+                        self?.backgroundImageFetchStatus = .idle
+                        if imageData != nil {
+                            self?.backgroundImage = UIImage(data: imageData!)
+                        }
                     }
                 }
             }
