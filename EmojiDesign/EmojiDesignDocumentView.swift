@@ -117,9 +117,11 @@ struct EmojiDesignDocumentView: View {
     
     private func zoomGesture() -> some Gesture {
         MagnificationGesture()
+            .updating($gestureZoomScale) { latestGestureScale, gestureZoomScale, transaction in
+                gestureZoomScale = latestGestureScale
+            }
             .onEnded { gestureScale in
                 steadyStateZoomScale *= gestureScale
-                
             }
     }
     
