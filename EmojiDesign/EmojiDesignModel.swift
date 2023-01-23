@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct EmojiDesignModel {
+struct EmojiDesignModel: Codable{
     var background = Backgoround.blank
     var emojis = [Emoji]()
     
-    struct Emoji : Identifiable, Hashable {
+    struct Emoji : Identifiable, Hashable, Codable {
         let text: String
         var x: Int
         var y: Int
@@ -25,6 +25,10 @@ struct EmojiDesignModel {
             self.size = size
             self.id = id
         }
+    }
+    
+    func json() throws -> Data {
+        return try JSONEncoder().encode(self)
     }
     
     init () {}

@@ -17,10 +17,20 @@ class EmojiDesignDocument: ObservableObject
         }
     }
     
+    private func save (to url: URL) {
+       do{
+           let data: Data = try emojiDesign.json()
+        try data.write(to: url)
+           
+       } catch {
+           print("EmojiDesignDocument.save(to:) error = \(error)")
+       }
+    }
+    
     init (){
         emojiDesign = EmojiDesignModel()
-        emojiDesign.emojiAdd("😀", at: (-200, 100), size: 70)
-        emojiDesign.emojiAdd("🤦‍♂️", at: (100, 50), size: 30)
+//        emojiDesign.emojiAdd("😀", at: (-200, 100), size: 70)
+//        emojiDesign.emojiAdd("🤦‍♂️", at: (100, 50), size: 30)
     }
     
     var emojis: [EmojiDesignModel.Emoji] {emojiDesign.emojis}
