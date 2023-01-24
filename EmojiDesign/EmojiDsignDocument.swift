@@ -11,10 +11,19 @@ class EmojiDesignDocument: ObservableObject
 {
     @Published private(set) var emojiDesign: EmojiDesignModel {
         didSet {
-            autosave()
+            scheduleAutosave()
             if emojiDesign.background != oldValue.background {
                 fetchbackgroundIfNecessary()
             }
+        }
+    }
+    
+    private var autoSaverTimer: Timer?
+    
+    private func scheduleAutosave() {
+        autoSaverTimer?.invalidate()
+        autoSaverTimer = Timer.scheduledTimer(withTimeInterval: AutoSave.coalescingInterval, repeats: false) {_ in
+            self.autosave()
         }
     }
     
@@ -24,6 +33,7 @@ class EmojiDesignDocument: ObservableObject
             let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
             return documentDirectory?.appendingPathComponent(filename)
         }
+        static let coalescingInterval = 5.0
     }
     
     private func autosave() {
