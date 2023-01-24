@@ -11,26 +11,50 @@ class EmojiDesignDocument: ObservableObject
 {
     @Published private(set) var emojiDesign: EmojiDesignModel {
         didSet {
+            autosave()
             if emojiDesign.background != oldValue.background {
                 fetchbackgroundIfNecessary()
             }
         }
     }
     
+    private struct AutoSave {
+        static let filename = "AutoSaved.emojidesign"
+        static var url: URL? {
+            let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+            return documentDirectory?.appendingPathComponent(filename)
+        }
+    }
+    
+    private func autosave() {
+        if let url  = AutoSave.url {
+            save(to: url)
+        }
+    }
+    
     private func save (to url: URL) {
+        let thisfunction = "\(String(describing: self)).\(#function)"
        do{
            let data: Data = try emojiDesign.json()
-        try data.write(to: url)
-           
+           print("\(thisfunction) json = \(String(data: data, encoding: .utf8) ?? "nil")")
+           try data.write(to: url)
+           print("\(thisfunction) success!")
+       } catch let encodingError where encodingError is EncodingError{
+           print("\(thisfunction) couldn't encode Emoji Design as JSON because \(encodingError.localizedDescription)")
        } catch {
-           print("EmojiDesignDocument.save(to:) error = \(error)")
+           print("\(thisfunction) error = \(error)")
        }
     }
     
     init (){
+        if let url = AutoSave.url, let autoSaveEmojiDesign = try? EmojiDesignModel(url: url) {
+            emojiDesign = autoSaveEmojiDesign
+            fetchbackgroundIfNecessary()
+        } else {
         emojiDesign = EmojiDesignModel()
 //        emojiDesign.emojiAdd("😀", at: (-200, 100), size: 70)
 //        emojiDesign.emojiAdd("🤦‍♂️", at: (100, 50), size: 30)
+        }
     }
     
     var emojis: [EmojiDesignModel.Emoji] {emojiDesign.emojis}
@@ -61,7 +85,7 @@ class EmojiDesignDocument: ObservableObject
                     }
                 }
             }
-        case .ImageData(let data):
+        case .imageData(let data):
             backgroundImage = UIImage(data: data)
         case .blank:
             break

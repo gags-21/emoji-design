@@ -59,7 +59,7 @@ struct EmojiDesignDocumentView: View {
         if !found {
             found = providers.loadObjects(ofType: UIImage.self) { image in
                 if let data = image.jpegData(compressionQuality: 1) {
-                    document.setBackground(.ImageData(data))
+                    document.setBackground(.imageData(data))
                 }
             }
         }

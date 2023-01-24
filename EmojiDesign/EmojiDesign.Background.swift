@@ -48,7 +48,7 @@ extension EmojiDesignModel {
             
             var imageData: Data? {
                 switch self {
-                case .ImageData(let data): return data
+                case .imageData(let data): return data
                 default: return nil
                 }
             }
