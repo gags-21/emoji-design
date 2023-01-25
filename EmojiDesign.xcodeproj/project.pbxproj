@@ -16,6 +16,7 @@
 		543D8B072962E3D600C3A690 /* EmojiDsignDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543D8B062962E3D600C3A690 /* EmojiDsignDocument.swift */; };
 		543D8B0A29630F6C00C3A690 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543D8B0829630F6C00C3A690 /* UtilityExtensions.swift */; };
 		543D8B0B29630F6C00C3A690 /* UtilityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543D8B0929630F6C00C3A690 /* UtilityViews.swift */; };
+		548D3AF6298147FE00F5CDFC /* PaletteBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548D3AF5298147FD00F5CDFC /* PaletteBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		543D8B062962E3D600C3A690 /* EmojiDsignDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiDsignDocument.swift; sourceTree = "<group>"; };
 		543D8B0829630F6C00C3A690 /* UtilityExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UtilityExtensions.swift; path = ../../../../Downloads/EmojiArtL10/EmojiArt/UtilityExtensions.swift; sourceTree = "<group>"; };
 		543D8B0929630F6C00C3A690 /* UtilityViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UtilityViews.swift; path = ../../../../Downloads/EmojiArtL10/EmojiArt/UtilityViews.swift; sourceTree = "<group>"; };
+		548D3AF5298147FD00F5CDFC /* PaletteBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				543D8B022962BD3D00C3A690 /* EmojiDesignModel.swift */,
 				543D8B042962DBF800C3A690 /* EmojiDesign.Background.swift */,
 				543D8B062962E3D600C3A690 /* EmojiDsignDocument.swift */,
+				548D3AF5298147FD00F5CDFC /* PaletteBar.swift */,
 				543D8B0829630F6C00C3A690 /* UtilityExtensions.swift */,
 				543D8B0929630F6C00C3A690 /* UtilityViews.swift */,
 				543D8AF82962BB4B00C3A690 /* Assets.xcassets */,
@@ -159,6 +162,7 @@
 				543D8B032962BD3D00C3A690 /* EmojiDesignModel.swift in Sources */,
 				543D8B072962E3D600C3A690 /* EmojiDsignDocument.swift in Sources */,
 				543D8B052962DBF800C3A690 /* EmojiDesign.Background.swift in Sources */,
+				548D3AF6298147FE00F5CDFC /* PaletteBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
