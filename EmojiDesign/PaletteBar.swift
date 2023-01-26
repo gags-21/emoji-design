@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Palette: Identifiable {
+struct Palette: Identifiable, Codable {
     var name: String
     var emojis: String
     var id: Int
@@ -28,21 +28,40 @@ class PaletteBar: ObservableObject {
     }
     
     private func storeInUserDefaults() {
-        UserDefaults.standard.set(palettes.map { [String($0.id), $0.name, $0.emojis] }, forKey: userDefaultKeys)
+        
+        UserDefaults.standard.setValue(try? JSONEncoder().encode(palettes), forKey: userDefaultKeys)
+        
+//        UserDefaults.standard.set(palettes.map { [String($0.id), $0.name, $0.emojis] }, forKey: userDefaultKeys)
     }
     
     private func restoreFromUserDefaults() {
         
+        if let jsonData = UserDefaults.standard.data(forKey: userDefaultKeys),
+           let decodedPalettes = try? JSONDecoder().decode(Array<Palette>.self, from: jsonData) {
+            palettes = decodedPalettes
+        }
+        
+//        if let palettesAsPropertyList = UserDefaults.standard.array(forKey: userDefaultKeys) as? [[String]] {
+//            for palettesAsArray in palettesAsPropertyList {
+//                if palettesAsArray.count == 3, let id = Int(palettesAsArray[0]), !palettes.contains(where: {$0.id == id}) {
+//                    let palette = Palette(name: ..[1], emojis: ..[2], id: [0])
+//                    palettes.append(contentsOf: palette)
+//                }
+//            }
+//        }
     }
     
     init(named name: String) {
         self.name = name
         restoreFromUserDefaults()
         if palettes.isEmpty {
+            print("using built-in Palettes")
             insertPalette(named: "Vehicles", emojis: "🚝🖥️🖨️🖲️🗜️🔨")
             insertPalette(named: "Sports", emojis: "🤦‍♂️😅😀😶‍🌫️🚃🖥️🖨️🖲️🗜️🔨")
             insertPalette(named: "Animals", emojis: "🏦📻💻⌨️🚝🖥️🖨️🖲️🗜️🔨")
             insertPalette(named: "Faces", emojis: "🤦‍♂️😅😀😶‍🌫️🖨️🖲️🗜️🔨")
+        } else {
+            print("Sucessfully loaded from userdefaults \(palettes)")
         }
     }
     
